@@ -44,4 +44,20 @@ contract Review {
     uint256 userCount;
     mapping(address => User) users;
     mapping(bytes32 => address) thingsToUser;
+
+    // access control to certain ops
+    modifier onlyAuthor() {
+        require(msg.sender == author, "You're not author !");
+        _;
+    }
+
+    // checks whether a given address is registered in dApp or not
+    function isAddressRegistered(address _addr)
+        public
+        view
+        onlyAuthor
+        returns (bool)
+    {
+        return users[_addr].created;
+    }
 }
