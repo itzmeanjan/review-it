@@ -21,4 +21,21 @@ contract Review {
         uint256 reviewCount;
         mapping(address => string) reviews;
     }
+
+    // holding some useful pieces of information related to one
+    // registered user in dApp ecosystem
+    //
+    // All {things} created by this user, to be reviewed by dApp participants, stored in blockchain
+    //
+    // All reviews & rating done by user to be stored on blockchain
+    struct User {
+        string name;
+        bool created;
+        uint256 thingCount;
+        mapping(uint256 => bytes32) things;
+        uint256 rateCount;
+        mapping(uint256 => bytes32) rates;
+        uint256 reviewCount;
+        mapping(uint256 => bytes32) reviews;
+    }
 }
