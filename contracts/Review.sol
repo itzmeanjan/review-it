@@ -90,7 +90,7 @@ contract Review {
         return userNameByAddress(msg.sender);
     }
 
-    // given address of account holder, things to
+    // given address of account holder, #-of things to
     // be reviewed created by user gets returned
     function thingCountByAddress(address _addr)
         public
@@ -100,5 +100,10 @@ contract Review {
         returns (uint256)
     {
         return users[_addr].thingCount;
+    }
+
+    // returns #-of items to be reviewed, created by msg.sender
+    function myThingCount() public view returns (uint256) {
+        return thingCountByAddress(msg.sender);
     }
 }
