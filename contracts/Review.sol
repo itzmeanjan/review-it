@@ -123,4 +123,9 @@ contract Review {
 
         return users[_addr].things[_index];
     }
+
+    // returns thing identifier, given index of that thing, from msg.sender's account
+    function myThingByIndex(uint256 _index) public view returns (bytes32) {
+        return thingByAddressAndIndex(msg.sender, _index);
+    }
 }
