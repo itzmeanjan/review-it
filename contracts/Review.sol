@@ -38,4 +38,10 @@ contract Review {
         uint256 reviewCount;
         mapping(uint256 => bytes32) reviews;
     }
+
+    uint256 thingCount;
+    mapping(bytes32 => Thing) things;
+    uint256 userCount;
+    mapping(address => User) users;
+    mapping(bytes32 => address) thingsToUser;
 }
