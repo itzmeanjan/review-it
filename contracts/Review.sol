@@ -86,12 +86,19 @@ contract Review {
     }
 
     // looks up user name of msg.sender
-    function myUserName()
+    function myUserName() public view returns (string memory) {
+        return userNameByAddress(msg.sender);
+    }
+
+    // given address of account holder, things to
+    // be reviewed created by user gets returned
+    function thingCountByAddress(address _addr)
         public
         view
+        addressRegistered(_addr)
         addressRegistered(msg.sender)
-        returns (string memory)
+        returns (uint256)
     {
-        return users[msg.sender].name;
+        return users[_addr].thingCount;
     }
 }
