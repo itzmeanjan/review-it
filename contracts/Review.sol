@@ -128,4 +128,45 @@ contract Review {
     function myThingByIndex(uint256 _index) public view returns (bytes32) {
         return thingByAddressAndIndex(msg.sender, _index);
     }
+
+    // given address of account holder, #-of things
+    // rated by user
+    function rateCountByAddress(address _addr)
+        public
+        view
+        addressRegistered(_addr)
+        addressRegistered(msg.sender)
+        returns (uint256)
+    {
+        return users[_addr].rateCount;
+    }
+
+    // returns #-of items rated by user, where user == msg.sender
+    function myRateCount() public view returns (uint256) {
+        return rateCountByAddress(msg.sender);
+    }
+
+    // given address of account holder & index of rated thing,
+    // we'll look up unique identifier associated with rated item
+    // for given user with address `_addr`
+    function ratedThingByAddressAndIndex(address _addr, uint256 _index)
+        public
+        view
+        addressRegistered(_addr)
+        addressRegistered(msg.sender)
+        returns (bytes32)
+    {
+        require(
+            _index >= 0 && _index < users[_addr].rateCount,
+            "Invalid id of rated thing !"
+        );
+
+        return users[_addr].rates[_index];
+    }
+
+    // returns rated thing identifier, given index of that thing,
+    // from msg.sender's account
+    function myRatedThingByIndex(uint256 _index) public view returns (bytes32) {
+        return ratedThingByAddressAndIndex(msg.sender, _index);
+    }
 }
