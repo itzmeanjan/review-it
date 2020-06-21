@@ -65,4 +65,20 @@ contract Review {
     function amIRegistered() public view returns (bool) {
         return users[msg.sender].created;
     }
+
+    modifier addressRegistered(address _addr) {
+        require(users[_addr].created, "Address not registered yet !");
+        _;
+    }
+
+    // given that a certain account ( _addr ) already registered,
+    // it'll lookup user name by address
+    function userNameByAddress(address _addr)
+        public
+        view
+        addressRegistered(_addr)
+        returns (string memory)
+    {
+        return users[_addr].name;
+    }
 }
