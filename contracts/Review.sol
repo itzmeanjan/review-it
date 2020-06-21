@@ -73,12 +73,25 @@ contract Review {
 
     // given that a certain account ( _addr ) already registered,
     // it'll lookup user name by address
+    //
+    // person looking up information, also must be registered in dApp
     function userNameByAddress(address _addr)
         public
         view
+        addressRegistered(msg.sender)
         addressRegistered(_addr)
         returns (string memory)
     {
         return users[_addr].name;
+    }
+
+    // looks up user name of msg.sender
+    function myUserName()
+        public
+        view
+        addressRegistered(msg.sender)
+        returns (string memory)
+    {
+        return users[msg.sender].name;
     }
 }
