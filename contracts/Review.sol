@@ -129,7 +129,7 @@ contract Review {
         return thingByAddressAndIndex(msg.sender, _index);
     }
 
-    // given address of account holder, #-of things
+    // given address of account holder, returns #-of things
     // rated by user
     function rateCountByAddress(address _addr)
         public
@@ -168,5 +168,50 @@ contract Review {
     // from msg.sender's account
     function myRatedThingByIndex(uint256 _index) public view returns (bytes32) {
         return ratedThingByAddressAndIndex(msg.sender, _index);
+    }
+
+    // given address of account holder, returns #-of things
+    // reviewed by user
+    function reviewCountByAddress(address _addr)
+        public
+        view
+        addressRegistered(_addr)
+        addressRegistered(msg.sender)
+        returns (uint256)
+    {
+        return users[_addr].reviewCount;
+    }
+
+    // returns #-of items reviewed by user, where user == msg.sender
+    function myReviewCount() public view returns (uint256) {
+        return reviewCountByAddress(msg.sender);
+    }
+
+    // given address of account holder & index of rated thing,
+    // we'll look up unique identifier associated with reviewed item
+    // for given user with address `_addr`
+    function reviewedThingByAddressAndIndex(address _addr, uint256 _index)
+        public
+        view
+        addressRegistered(_addr)
+        addressRegistered(msg.sender)
+        returns (bytes32)
+    {
+        require(
+            _index >= 0 && _index < users[_addr].reviewCount,
+            "Invalid id of reviewed thing !"
+        );
+
+        return users[_addr].reviews[_index];
+    }
+
+    // returns reviewed thing identifier, given index of that thing,
+    // from msg.sender's account
+    function myReviewedThingByIndex(uint256 _index)
+        public
+        view
+        returns (bytes32)
+    {
+        return reviewedThingByAddressAndIndex(msg.sender, _index);
     }
 }
