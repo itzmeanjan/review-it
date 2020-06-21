@@ -86,12 +86,132 @@ contract Review {
     }
 
     // looks up user name of msg.sender
-    function myUserName()
+    function myUserName() public view returns (string memory) {
+        return userNameByAddress(msg.sender);
+    }
+
+    // given address of account holder, #-of things to
+    // be reviewed created by user gets returned
+    function thingCountByAddress(address _addr)
         public
         view
+        addressRegistered(_addr)
         addressRegistered(msg.sender)
-        returns (string memory)
+        returns (uint256)
     {
-        return users[msg.sender].name;
+        return users[_addr].thingCount;
+    }
+
+    // returns #-of items to be reviewed, created by msg.sender
+    function myThingCount() public view returns (uint256) {
+        return thingCountByAddress(msg.sender);
+    }
+
+    // given address of account holder & index of thing we want to look up,
+    // we'll return unique identifier for that thing
+    function thingByAddressAndIndex(address _addr, uint256 _index)
+        public
+        view
+        addressRegistered(_addr)
+        addressRegistered(msg.sender)
+        returns (bytes32)
+    {
+        require(
+            _index >= 0 && _index < users[_addr].thingCount,
+            "Invalid id of thing !"
+        );
+
+        return users[_addr].things[_index];
+    }
+
+    // returns thing identifier, given index of that thing, from msg.sender's account
+    function myThingByIndex(uint256 _index) public view returns (bytes32) {
+        return thingByAddressAndIndex(msg.sender, _index);
+    }
+
+    // given address of account holder, returns #-of things
+    // rated by user
+    function rateCountByAddress(address _addr)
+        public
+        view
+        addressRegistered(_addr)
+        addressRegistered(msg.sender)
+        returns (uint256)
+    {
+        return users[_addr].rateCount;
+    }
+
+    // returns #-of items rated by user, where user == msg.sender
+    function myRateCount() public view returns (uint256) {
+        return rateCountByAddress(msg.sender);
+    }
+
+    // given address of account holder & index of rated thing,
+    // we'll look up unique identifier associated with rated item
+    // for given user with address `_addr`
+    function ratedThingByAddressAndIndex(address _addr, uint256 _index)
+        public
+        view
+        addressRegistered(_addr)
+        addressRegistered(msg.sender)
+        returns (bytes32)
+    {
+        require(
+            _index >= 0 && _index < users[_addr].rateCount,
+            "Invalid id of rated thing !"
+        );
+
+        return users[_addr].rates[_index];
+    }
+
+    // returns rated thing identifier, given index of that thing,
+    // from msg.sender's account
+    function myRatedThingByIndex(uint256 _index) public view returns (bytes32) {
+        return ratedThingByAddressAndIndex(msg.sender, _index);
+    }
+
+    // given address of account holder, returns #-of things
+    // reviewed by user
+    function reviewCountByAddress(address _addr)
+        public
+        view
+        addressRegistered(_addr)
+        addressRegistered(msg.sender)
+        returns (uint256)
+    {
+        return users[_addr].reviewCount;
+    }
+
+    // returns #-of items reviewed by user, where user == msg.sender
+    function myReviewCount() public view returns (uint256) {
+        return reviewCountByAddress(msg.sender);
+    }
+
+    // given address of account holder & index of rated thing,
+    // we'll look up unique identifier associated with reviewed item
+    // for given user with address `_addr`
+    function reviewedThingByAddressAndIndex(address _addr, uint256 _index)
+        public
+        view
+        addressRegistered(_addr)
+        addressRegistered(msg.sender)
+        returns (bytes32)
+    {
+        require(
+            _index >= 0 && _index < users[_addr].reviewCount,
+            "Invalid id of reviewed thing !"
+        );
+
+        return users[_addr].reviews[_index];
+    }
+
+    // returns reviewed thing identifier, given index of that thing,
+    // from msg.sender's account
+    function myReviewedThingByIndex(uint256 _index)
+        public
+        view
+        returns (bytes32)
+    {
+        return reviewedThingByAddressAndIndex(msg.sender, _index);
     }
 }
