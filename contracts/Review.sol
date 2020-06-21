@@ -60,4 +60,9 @@ contract Review {
     {
         return users[_addr].created;
     }
+
+    // checks whether function invoker i.e. msg.sender is registered or not
+    function amIRegistered() public view returns (bool) {
+        return users[msg.sender].created;
+    }
 }
