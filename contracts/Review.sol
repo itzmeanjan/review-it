@@ -106,4 +106,21 @@ contract Review {
     function myThingCount() public view returns (uint256) {
         return thingCountByAddress(msg.sender);
     }
+
+    // given address of account holder & index of thing we want to look up,
+    // we'll return unique identifier for that thing
+    function thingByAddressAndIndex(address _addr, uint256 _index)
+        public
+        view
+        addressRegistered(_addr)
+        addressRegistered(msg.sender)
+        returns (bytes32)
+    {
+        require(
+            _index >= 0 && _index < users[_addr].thingCount,
+            "Invalid id of thing !"
+        );
+
+        return users[_addr].things[_index];
+    }
 }
